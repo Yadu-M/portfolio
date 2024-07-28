@@ -21,6 +21,7 @@
     "@content-collections/next": "^0.2.0",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^20",
+    "@types/prop-types": "^15.7.12",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
