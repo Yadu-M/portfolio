@@ -1,8 +1,8 @@
 "use client";
 import { SiGithub, SiGmail } from "react-icons/si";
 import Link from "next/link";
-import { Navigation } from "@/app/components/Navigation";
-import { Card } from "@/app/components/Card";
+import { Navigation } from "@/components/Navigation";
+import { Card } from "@/components/Card";
 
 const socials = [
   {
