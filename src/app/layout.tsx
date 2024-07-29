@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "yadukm.com",
     description:
       "New Grad Eng",
-    url: "https://yadukim.com",
+    url: "https://yadukm.com",
     siteName: "yadukm.com",
     images: [
       {
@@ -36,11 +36,20 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    shortcut: "/favicon.png",
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
   },
 };
+
 const inter = Inter({
   subsets: ["latin"],
+  display: 'swap',
   variable: "--font-inter",
 });
 
