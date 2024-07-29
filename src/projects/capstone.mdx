@@ -1,0 +1,42 @@
+---
+id: "capstone"
+title: "Automated Parking Management System"
+description: "My engineering capstone project."
+featured: false
+date: "2024-05"
+repository: "Automated-Parking-Management-System"
+---
+
+import { FaReact } from "react-icons/fa";
+import { SiJavascript, SiFirebase } from "react-icons/si";
+
+# Capstone Project
+We basically designed as the title says, Automated Parking Management System. The objective was to showcase by utilizing IoT devices
+with wireless sensing and reporting capabilities along with a central server/processor and intelligent decision making, an efficient
+system is possible.
+
+## Overview
+We designed an intelligent and self sufficient parking management system using IoT technologies. Our System comprised of
+multiple components including IoT hardware to fullfill tasks such as:
+- **Weight Sensors** : Detected the presence of vehicles during the parking state. Crucial role
+played to accurately track a parking spot state.
+
+- **Servo Motors** : Controlled the gate based on the entrance state determined by the entrance
+sub system.
+- **Led Modules** : Helped to visually indicate the state of a specific parking spot. Ex. red = occupied, green = !occupied.
+- **ESPCAM** : Detected QR-Codes from User Web App to authenticate and authorize the User to enter the parking lot.
+- **ESP32** : Served as the central Unit to bridge gaps between other sub systems including the Web App. It connected 
+all the above mentioned components and it set the main logic for the system.
+
+## Design
+Below was a higher level view of the parking lot prototype. 
+![Parking Lot Diagram](../project-images/capstone/parking_lot.jpg "Parking Lot Diagram")
+
+Below was a higher level view of the parking lot entrance design.
+![Parking Lot Diagram](../project-images/capstone/parking_lot_entrance.jpg "Parking Lot Diagram")
+
+Below was the authentication page for the web app.
+![Login/Sign up page](../project-images/capstone/auth.png "Login/Sign up page")
+
+Below was the QR-Code page for the web app.
+![QR-Code Page Image](../project-images/capstone/qr_code.png "QR-Code page")

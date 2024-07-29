@@ -14,12 +14,11 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
     featured: z.boolean(),
-    date: z.string()
+    date: z.string(),
+    repository: z.string()
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
-
-
       remarkPlugins: [remarkGfm],
       rehypePlugins: [
         rehypeSlug,

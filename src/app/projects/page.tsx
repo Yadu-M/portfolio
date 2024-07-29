@@ -5,10 +5,10 @@ import { Card } from "@/components/Card";
 import Link from "next/link";
 
 export default function ProjectHomePage() {
-
   const featured = allProjects.find(project => project.featured === true)!
-  const top2 = allProjects.find(project => project.title === "Portfolio")!
-  const top3 = allProjects.find(project => project.title === "Rover Simulator")!
+  const top2 = allProjects.find(project => project.id === "portfolio")!
+  const top3 = allProjects.find(project => project.id === "capstone")!
+  console.log(featured.title)
   const sorted = allProjects.filter(project =>
     project.title !== top2.title &&
     project.title !== top3.title &&
