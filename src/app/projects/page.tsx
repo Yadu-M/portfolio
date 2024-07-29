@@ -24,7 +24,7 @@ export default function ProjectHomePage() {
             Projects
           </h2>
           <p className="mt-4 text-zinc-400">
-            Some of the projects are from work and some are on my own time.
+            Some of the projects are from UnderGrad and some are from my own time.
           </p>
         </div>
         <div className="w-full h-px bg-zinc-800" />

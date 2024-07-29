@@ -4,16 +4,16 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "yadii.com",
-    template: "%s | yadii.com",
+    default: "yadukm.ddns.net",
+    template: "%s | yadukm.ddns.net",
   },
   description: "Software Dev",
   openGraph: {
-    title: "yadii.com",
+    title: "yadukm.ddns.net",
     description:
       "New Grad Eng",
-    url: "https://yadii.com",
-    siteName: "yadii.com",
+    url: "https://yadukm.ddns.net",
+    siteName: "yadukm.ddns.net",
     locale: "en-US",
     type: "website",
   },
