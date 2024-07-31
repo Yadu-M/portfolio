@@ -4,18 +4,20 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "yadukm.ddns.net",
-    template: "%s | yadukm.ddns.net",
+    default: "Yadu KM | Portfolio",
+    template: "%s | Yadu KM",
   },
-  description: "Software Dev",
+  description: "Personal portfolio of Yadu Krishnan Madhu, New Grad Software Dev",
   openGraph: {
-    title: "yadukm.ddns.net",
-    description:
-      "New Grad Eng",
-    url: "https://yadukm.ddns.net",
-    siteName: "yadukm.ddns.net",
+    title: "Yadu KM | Portfolio",
+    description: "Personal portfolio of Yadu KM, showcasing software development projects and skills",
+    url: "https://www.yadukm.com/",
+    siteName: "Yadu KM Portfolio",
     locale: "en-US",
     type: "website",
+  },
+  alternates: {
+    canonical: "https://www.yadukm.com",
   },
   robots: {
     index: true,
