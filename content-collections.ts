@@ -15,7 +15,8 @@ const projects = defineCollection({
     description: z.string(),
     featured: z.boolean(),
     date: z.string(),
-    repository: z.string()
+    repository: z.string(),
+    url: z.string()
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
