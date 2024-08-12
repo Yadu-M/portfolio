@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { allProjects } from "content-collections";
 import { Mdx } from "../../../components/Mdx";
-import { Header } from "@/components/Header";
+import { Header } from "./Header";
 import "./mdx.css"
 
 type Props = {
