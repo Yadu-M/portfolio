@@ -6,8 +6,6 @@ cd portfolio
 echo "Pulling Changes"
 git pull
 
-npm i
-
 echo "Building App"
 npm run build || { echo "Build failed"; cat /home/yadu/.npm/_logs/$(ls -t /home/yadu/.npm/_logs/ | head -n 1); exit 1; }
 

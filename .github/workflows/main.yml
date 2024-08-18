@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.3.0'  
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Copy SSH key
         uses: shimataro/ssh-key-action@v2
         with:
