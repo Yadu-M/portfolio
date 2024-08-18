@@ -6,6 +6,12 @@ cd portfolio
 echo "Pulling Changes"
 git pull
 
+echo "Current Node.js version"
+node -v
+
+echo "Current npm version"
+npm -v
+
 echo "Switching to correct Node.js version"
 nvm use 22  # Adjust this version if needed
 
