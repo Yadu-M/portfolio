@@ -21,7 +21,6 @@
 *.pem
 .vscode
 *.out
-*.sh
 
 # debug
 npm-debug.log*
