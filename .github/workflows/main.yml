@@ -1,0 +1,26 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your SSH private key as a GitHub secret
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}  # Add the Raspberry Pi host info to known_hosts
+
+      - name: Deploy to Raspberry Pi
+        run: |
+          ssh yadu@yadukm.ddns.net 'bash -s' < ./deploy-script.sh
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh-agent.sock
