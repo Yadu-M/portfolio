@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e  # Exit on any error
 
-cd portfolio
-
 echo "Pulling Changes"
 git pull
 
