@@ -6,14 +6,7 @@ cd portfolio
 echo "Pulling Changes"
 git pull
 
-echo "Current Node.js version"
-node -v
-
-echo "Current npm version"
-npm -v
-
-echo "Switching to correct Node.js version"
-nvm use 22  # Adjust this version if needed
+npm i
 
 echo "Building App"
 npm run build || { echo "Build failed"; cat /home/yadu/.npm/_logs/$(ls -t /home/yadu/.npm/_logs/ | head -n 1); exit 1; }
