@@ -13,14 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Copy SSH key
+      - name: Set up SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
+      - name: Debug SSH Environment
+        run: |
+          echo "Checking SSH key and permissions"
+          ls -l ~/.ssh/
+          echo "Checking SSH connection"
+          ssh -o StrictHostKeyChecking=no yadu@yadukm.ddns.net 'echo SSH Connection Successful'
+
       - name: Deploy to Raspberry Pi
         run: |
-          ssh yadu@yadukm.ddns.net 'bash -s' < ./deploy-script.sh
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+          ssh -o StrictHostKeyChecking=no yadu@yadukm.ddns.net 'bash -s' < ./deploy-script.sh
