@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to Raspberry Pi
         run: |
-          ssh yadu@yadukm.ddns.net "./deploy-script.sh"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "./${{ secrets.DEPLOY_SCRIPT }}"
