@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 
 const projects = defineCollection({
   name: "projects",
-  directory: "src/projects/",
+  directory: "src/content/projects",
   include: "*.mdx",
   schema: (z) => ({
     id: z.string(),
