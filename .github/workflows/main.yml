@@ -19,13 +19,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
-      - name: Debug SSH Environment
-        run: |
-          echo "Checking SSH key and permissions"
-          ls -l ~/.ssh/
-          echo "Checking SSH connection"
-          ssh -o StrictHostKeyChecking=no yadu@yadukm.ddns.net 'echo SSH Connection Successful'
-
       - name: Deploy to Raspberry Pi
         run: |
-          ssh -o StrictHostKeyChecking=no yadu@yadukm.ddns.net 'bash -s' < ./deploy-script.sh
+          ssh yadukm.ddns.net 'bash -s' < ./deploy-script.sh
