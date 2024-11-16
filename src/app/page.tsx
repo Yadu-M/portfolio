@@ -21,7 +21,7 @@ export default function Home() {
               {item.name}
             </Link>
           ))}
-          <form method="get" action="/resume/Yadu_M_NewGrad_Engineering_Dev.pdf" target="_blank" className="hover:text-zinc-300">
+          <form method="get" action="/resume/resume.pdf" target="_blank" className="hover:text-zinc-300">
             <button>Resume</button>
           </form>
         </ul>
