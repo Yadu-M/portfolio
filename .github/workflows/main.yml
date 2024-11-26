@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to Raspberry Pi
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "./${{ secrets.DEPLOY_SCRIPT }}"
+          ssh ${{ secrets.SSH_HOST }} "./${{ secrets.DEPLOY_SCRIPT }}"
