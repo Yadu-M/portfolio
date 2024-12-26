@@ -1,0 +1,81 @@
+---
+id: "capstone"
+title: "Capstone"
+description: "My engineering capstone project titled : Automated Parking Management System."
+featured: false
+date: "2024-05"
+repository: "Automated-Parking-Management-System"
+url: ""
+---
+
+import { FaReact, FaMicrochip } from "react-icons/fa";
+import { SiJavascript, SiFirebase } from "react-icons/si";
+
+export function Technologies() {
+  return (
+    <div className="flex gap-x-3">
+      <FaReact className="w-6 h-6" />
+      <SiJavascript  className="w-6 h-6"/>
+      <SiFirebase className="w-6 h-6"/>
+      <FaMicrochip className="w-6 h-6" />
+    </div>    
+  )
+}
+
+<Technologies />
+<br/>
+# Automated Parking Management System
+We basically designed as the title says an Automated Parking Management System. The objective was to showcase by utilizing IoT devices
+with wireless sensing and reporting capabilities along with a central server/processor and intelligent decision making, an efficient
+system is possible.
+
+## Overview
+We designed an intelligent and self sufficient parking management system using IoT technologies. Our System comprised of
+multiple components including IoT hardware to fullfill tasks such as:
+- **Weight Sensors** : Detected the presence of vehicles during the parking state. Crucial role
+played to accurately track a parking spot state.
+- **Servo Motors** : Controlled the gate based on the entrance state determined by the entrance
+sub system.
+- **Led Modules** : Helped to visually indicate the state of a specific parking spot. Ex. red = occupied, green = !occupied.
+- **ESPCAM** : Detected QR-Codes from User Web App to authenticate and authorize the User to enter the parking lot.
+- **ESP32** : Served as the central Unit to bridge gaps between other sub systems including the Web App. It connected 
+all the above mentioned components and it set the main logic for the system.
+
+### Design Breakdown
+
+|     | Hardware  |  Software | 
+| --  | :-: | :-: |
+| **User Authentication** | ESP-CAM detects for QR-Codes and decodes them. Updates RTDB after successful verification.  | Web App generates a unique QR-Code encoded with an encrypted code. |
+| **Entrance** | Servo motor open/close the game gate depending on the RTDB state value. | ESP32 listens for RTDB state change pushed after QR-Code verification. Sends command to Servo to update in real-time. |
+| **Parking Spot** | Each HDX711 with load cell is assigned a unique ID. When change is detected, sends signal to ESP32. | ESP32 listens signal to then update the Database value corresponding to the parking spot and the user. |
+| **Analytics** | NA | Patterns including user occurance, parking spot traffic are noted and stored as part of conducting analysis. |
+
+
+## Design
+
+Here are some Design diagrams of parts of out system.
+- Higher level view of the parking lot prototype. 
+![Parking Lot Diagram](../project-images/capstone/parking_lot.jpg "Parking Lot Diagram")
+
+- Higher level view of the parking lot entrance design.
+![Parking Lot Diagram](../project-images/capstone/parking_lot_entrance.jpg "Parking Lot Diagram")
+
+- Higher level block diagram of the software architecture of the system.
+![Software Architecture Block Diagram](../project-images/capstone/software_block_diagram.jpg "Software Architecture Block Diagram")
+
+- Authentication page for the web app.
+![Login/Sign up page](../project-images/capstone/auth.png "Login/Sign up page")
+
+- QR-Code page for the web app.
+![QR-Code Page Image](../project-images/capstone/qr_code.png "QR-Code page")
+
+
+## Poster
+![Capstone Poster](../project-images/capstone/poster.png "Capstone Poster")
+
+## Conclusion
+Alas, the exhibition day arrives and it was alot of fun. Here is an image of our exhibit:
+![Exhibit Image](../project-images/capstone/display.jpg "Exhibit Image")
+
+
+

@@ -1,0 +1,109 @@
+---
+id: gemini-contest
+title: "Gemini Contest"
+description: "AI-Interviewer App to help job seekers prepare for job interviews. Powered by Google Gemini."
+featured: true
+date: "2024-08-12"
+repository: "namoosir/gemini-contest"
+url: "https://chimerical-liger-1f1422.netlify.app/"
+---
+import { FaReact } from "react-icons/fa";
+import { SiTypescript, SiFirebase, SiDeepgram, SiGooglegemini, SiShadcnui } from "react-icons/si";
+
+export function Technologies() {
+  return (
+    <div className="flex gap-x-3">
+      <FaReact className="w-6 h-6" />
+      <SiTypescript className="w-6 h-6"/>
+      <SiFirebase className="w-6 h-6"/>
+      <SiDeepgram className="w-6 h-6"/>
+      <SiGooglegemini className="w-6 h-6"/>
+      <SiShadcnui className="w-6 h-6"/>
+    </div>    
+  )
+}
+
+<Technologies />
+
+Gemini Contest Submission
+
+# AI Interviewer App
+Introducing our AI interviewer app, designed to help interviewees with their interview preparation. 
+
+![Dashboard Image](../project-images/gemini-contest/dashboard.png "Dashboard")
+The dashboard has a all the available metrics about the interviews users have completed.
+
+![Interview history](../project-images/gemini-contest/interview-history.png "interview-history")
+If you scroll down, users can see a history of the interviews they have completed.
+
+![Chat Score](../project-images/gemini-contest/chat-score.png "chat-score")
+A detailed summary of user responses can be seen by picking out one of the responses.
+
+![Interview Settings Image](../project-images/gemini-contest/settings.png "Settings")
+Here are the currently available interview settings to tweak the experience based on the users' needs.
+
+![Interview Results](../project-images/gemini-contest/result.png "result")
+This is the results page after interview finishes
+
+## Implementation details
+I worked on a number of things in this project. One of the more notable things is the Chat Component. Here are the number of states in this just 1, but a core component:
+```ts
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [transcript, setTranscript] = useState<string>("");
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [amplitude, setAmplitude] = useState<number>(2.3);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [resume, setResume] = useState<Resume | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSocketSetupLoading, setIsSocketSetupLoading] =
+    useState<boolean>(true);
+  const [confirmedNavigation, setConfirmedNavigation] =
+    useState<boolean>(false);
+  const [hasInterviewStarted, setHasInterviewStarted] =
+    useState<boolean>(false);
+  const [seconds, setSeconds] = useState(0);
+  const [interviewEnded, setInterviewEnded] = useState<boolean>(false);
+  const [isDoneDialogOpen, setIsDoneDialogOpen] = useState<boolean>(false);
+  const [geminiAnalyser, setGeminiAnalyser] = useState<AnalyserNode>();
+  const [geminiAudioContext, setGeminiAudioContext] = useState<AudioContext>();
+  const [resultsLoading, setResultsLoading] = useState<boolean>(true);
+
+  const socketRef = useRef<WebSocket | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const socketIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const isRecordingRef = useRef<boolean>(isRecording);
+  const audioContextRef = useRef<AudioContext | undefined>();
+  const micAudioContextRef = useRef<AudioContext | undefined>();
+  const streamRef = useRef<MediaStream | undefined>();
+  const sourceRef = useRef<MediaStreamAudioSourceNode | undefined>();
+  const geminiRef = useRef<InterviewBot>(new InterviewBot());
+  const locationStateRef = useRef<InterviewProps | undefined>();
+  const interviewResultRef = useRef<Interview>();
+
+  const { db } = useFirebaseContext();
+  const { user } = useAuthContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+```
+This is definitely excessive I do have plans on refactoring it and pulling components out of the file to only describe the chat logic, but thats for another day.
+
+
+While I was working on the TTS functionality, I was under the assumption that Firebase Cloud Function endpoints can only send simple HTTP responses, however, I
+figured out from this [Link](https://github.com/firebase/firebase-functions/issues/401 "Link") that I can pipe my response to stream audio blobs for TTS.
+```ts
+const responseBody = await getTTS(text)
+res.setHeader('Content-Type', 'audio/mp3')
+
+responseBody.pipe(res);
+```
+where ```getTTS``` returns a ```Readable```.
+
+
+{/* ## Some features include:
+- **Timed Interviews** : Practise under real-time constraints with our 5, 10 or 15 minute settings, simulating the pressure of actual interview scenarios.
+- **Customizable Interview Flow** : Tailor your interview experience by submitting your job description and resume. Adjust settings such as duration, interview type (technical, behavioral), and various modes to match your needs. 
+- **AI-Powered Conversations** : Engage in dynamic conversations with our Gemini Powered AI, mimicking a real interview environment to help you prepare thoroughly.
+- **Performance Metrics** : Upon completing the interview, receive a detailed results page highlighting key performance metrics to help you identify strengths and areas for improvement. */}
+
+
