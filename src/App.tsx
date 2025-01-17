@@ -23,8 +23,8 @@ function App() {
                 </>
               }
             />
-            <Route path="/project/:id" element={<MdxRenderer />} />{" "}
-            <Route path="*" element={<>wtf</>}/>
+            <Route path="/project/:id" element={<MdxRenderer />} />
+            <Route path="*" element={<h2>Error 404 Not Found</h2>} />
           </Routes>
         </Layout>
       </Router>
