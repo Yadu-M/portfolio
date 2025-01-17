@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from "react";
 import { useMDXComponent } from "@content-collections/mdx/react";
 import { NavLink } from "react-router-dom";

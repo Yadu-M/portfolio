@@ -24,6 +24,7 @@ function App() {
               }
             />
             <Route path="/project/:id" element={<MdxRenderer />} />{" "}
+            <Route path="*" element={<>wtf</>}/>
           </Routes>
         </Layout>
       </Router>

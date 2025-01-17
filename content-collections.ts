@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 
 const projects = defineCollection({
   name: "projects",
-  directory: "./public/content",
+  directory: "public/content",
   include: "*.mdx",
   schema: (z) => ({
     id: z.string(),
@@ -27,20 +27,20 @@ const projects = defineCollection({
           rehypePrettyCode,
           {
             theme: "github-dark",
-            
-            onVisitLine(node: { children: string | any[]; }) {
+            //@ts-ignore
+            onVisitLine(node) {
               // Prevent lines from collapsing in `display: grid` mode, and allow empty
               // lines to be copy/pasted
               if (node.children.length === 0) {
                 node.children = [{ type: "text", value: " " }];
               }
             },
-            
-            onVisitHighlightedLine(node: { properties: { className: string[]; }; }) {
+            //@ts-ignore
+            onVisitHighlightedLine(node) {
               node.properties.className.push("line--highlighted");
             },
-            
-            onVisitHighlightedWord(node: { properties: { className: string[]; }; }) {
+            //@ts-ignore
+            onVisitHighlightedWord(node) {
               node.properties.className = ["word--highlighted"];
             },
           },
