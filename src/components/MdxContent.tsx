@@ -182,10 +182,9 @@ const components = {
   Image,
 };
 
-const MdxLoader = ({ content }: { content: string }) => {
+export const MdxLoader = ({ content }: { content: string }) => {
   const Content = lazy(
     () => import(/* @vite-ignore */ `../content/${content}.mdx`),
-    // const file = await compile
   );
 
   return (
