@@ -1,9 +1,10 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { Layout } from "./Layout";
-import { Projects } from "./Projects";
+import { ProjectList } from "./ProjectList";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { MdxRenderer } from "./mdx/MdxRenderer";
 import { Contacts } from "./Contacts";
+import { Suspense } from "react";
+import { ProjectPage } from "./Project";
 
 function App() {
   const intro =
@@ -12,20 +13,22 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Layout>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <p>{intro}</p>
-                  <Projects />
-                  <Contacts />
-                </>
-              }
-            />
-            <Route path="/project/:id" element={<MdxRenderer />} />
-            <Route path="*" element={<h2>Error 404 Not Found</h2>} />
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <p>{intro}</p>
+                    <ProjectList />
+                    <Contacts />
+                  </>
+                }
+              />
+              <Route path="/project/:projectId" element={<ProjectPage />} />
+              <Route path="*" element={<h2>Error 404 Not Found</h2>} />
+            </Routes>
+          </Suspense>
         </Layout>
       </Router>
     </ThemeProvider>

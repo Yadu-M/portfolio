@@ -3,10 +3,9 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Lora-Variable';
-  src: url('../fonts/Lora-Variable.woff2') format('woff2'),
-       url('../fonts/Lora-Variable.woff') format('woff'),
-       url('../fonts/Lora-Variable.ttf') format('truetype');
+  font-family: "Lora-Variable";
+  src: url("./assets/Lora-Variable.woff2") format("woff2");
+
   font-weight: 400 700;
   font-display: swap;
   font-style: normal;
@@ -84,8 +83,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border;
@@ -95,19 +92,18 @@
   }
 
   h1 {
-    @apply text-4xl
+    @apply text-4xl;
   }
 
   h2 {
-    @apply text-2xl font-bold
+    @apply text-2xl font-bold;
   }
 
   h3 {
-    @apply text-2xl 
+    @apply text-2xl;
   }
 
   text {
-    @apply font-mono
+    @apply font-mono;
   }
-
 }

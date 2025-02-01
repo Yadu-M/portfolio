@@ -1,11 +1,11 @@
 // @ts-nocheck
-import * as React from "react";
-import { useMDXComponent } from "@content-collections/mdx/react";
-import { NavLink } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import fs from "node:fs/promises";
 
 function clsx(...args: string[]) {
   return args.filter(Boolean).join(" ");
 }
+
 const components = {
   h1: ({ className, ...props }) => (
     <h1
@@ -182,16 +182,17 @@ const components = {
   Image,
 };
 
-interface MdxProps {
-  code: string;
-}
-
-export function Mdx({ code }: MdxProps) {
-  const Component = useMDXComponent(code);
+const MdxLoader = ({ content }: { content: string }) => {
+  const Content = lazy(
+    () => import(/* @vite-ignore */ `../content/${content}.mdx`),
+    // const file = await compile
+  );
 
   return (
-    <div className="mdx">
-      <Component components={components} />
-    </div>
+    <Suspense fallback={<div>Loading content...</div>}>
+      <Content components={components} />
+    </Suspense>
   );
-}
+};
+
+export default MdxLoader;
