@@ -1,37 +1,36 @@
 import { NavLink } from "react-router-dom";
 import { Frontmatter } from "./types";
+import { useEffect, useState } from "react";
 
-interface Project {
-  slug: string;
-  frontmatter: Frontmatter;
-}
-
-const getProjects = () => {
+const getProjects = async () => {
   const projectModules = import.meta.glob("./content/projects/*.mdx", {
-    eager: true,
     import: "frontmatter",
   });
 
-  const projects = Object.entries(projectModules).map(
-    ([path, frontmatter]): Project => {
+  // Map over the entries, creating an array of promises.
+  const projects = await Promise.all(
+    Object.entries(projectModules).map(async ([path, frontmatterPromise]) => {
       const slug =
         path
           .split("/")
           .pop()
           ?.replace(/\.mdx$/, "") || "";
+      const frontMatter = (await frontmatterPromise()) as Frontmatter;
 
       return {
         slug,
-        frontmatter: frontmatter as Frontmatter,
+        frontMatter,
       };
-    },
+    }),
   );
 
-  return projects.sort(
-    (a, b) =>
-      new Date(b.frontmatter.date).getTime() -
-      new Date(a.frontmatter.date).getTime(),
-  );
+  projects.sort((a, b) => {
+    const dateA = new Date(a.frontMatter.date).getTime();
+    const dateB = new Date(b.frontMatter.date).getTime();
+    return dateB - dateA;
+  });
+
+  return projects;
 };
 
 const ProjectTile = ({ props }: { props: Frontmatter }) => {
@@ -52,17 +51,27 @@ const ProjectTile = ({ props }: { props: Frontmatter }) => {
 };
 
 export const ProjectList = () => {
+  const [projects, setProjects] = useState<
+    { slug: string; frontMatter: Frontmatter }[]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getProjects().then((data) => {
+      setProjects(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <>Loading...</>;
+
   return (
     <section>
       <h2 className="">Projects</h2>
       <div className="mt-3 flex flex-wrap justify-center gap-10 md:justify-normal">
-        {getProjects().map((project) => {
-          if (project) {
-            return (
-              <ProjectTile props={project.frontmatter} key={project.slug} />
-            );
-          }
-        })}
+        {projects.map((project) => (
+          <ProjectTile props={project.frontMatter} key={project.slug} />
+        ))}
       </div>
     </section>
   );

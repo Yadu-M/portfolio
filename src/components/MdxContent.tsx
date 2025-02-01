@@ -182,10 +182,13 @@ const components = {
   Image,
 };
 
+const mdxModules = import.meta.glob("../content/projects/*.mdx");
+
 export const MdxLoader = ({ content }: { content: string }) => {
-  const Content = lazy(
-    () => import(/* @vite-ignore */ `../content/${content}.mdx`),
-  );
+  const importCurrMdx = mdxModules[`../content/${content}.mdx`];
+  if (!importCurrMdx) return <>Content Not Found</>;
+
+  const Content = lazy(() => importCurrMdx());
 
   return (
     <Suspense fallback={<div>Loading content...</div>}>

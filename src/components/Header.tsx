@@ -39,7 +39,7 @@ export const Header = () => {
   return (
     <header className="flex justify-between">
       <NavLink to="/">
-        <h1 className="mr-2 inline-block text-4xl">Portfolio</h1>
+        <h1 className="mr-2 inline-block text-4xl">Yadii</h1>
       </NavLink>
 
       <nav className="flex gap-5">
