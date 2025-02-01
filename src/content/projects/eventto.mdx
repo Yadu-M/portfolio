@@ -1,0 +1,136 @@
+---
+id: "eventto"
+title: "Toronto Events"
+description: "Check out events going on around Toronto !"
+featured: true
+date: "2025-01"
+repository: "events_TO"
+url: "https://eventto.ca/"
+---
+
+import { FaReact } from "react-icons/fa";
+import { SiTypescript, SiShadcnui, SiGooglemaps } from "react-icons/si";
+
+export function Technologies() {
+  return (
+    <div className="flex gap-x-2">
+      <FaReact size={30} />
+      <SiTypescript size={30} />
+      <SiShadcnui size={30} />
+      <SiGooglemaps size={30} />
+    </div>
+  )
+}
+
+<Technologies />
+<br />
+
+# eventto.ca
+
+Take a look at my new project where you can see events happening around Toronto.
+
+I got the idea for this project when i learned about the **[Toronto City database](https://open.toronto.ca/, "City of Toronto Open Data Portal")**.
+This website has a wealth of information in the form of datasets tracking all kinds of information in varying formats and time periods. Each dataset are assigned
+scores that indicate the quality of the dataset as well. My idea was to pick a dataset that provdies realtime information regardless of the quality of the data.
+The one that stood out to me was the **[Festivals and Events dataset](https://open.toronto.ca/dataset/festivals-events/, "Festivals and Events dataset link")**.
+
+![dataset quality pic](../images/eventto/dataset_quality.png "dataset quality pic")
+
+The dataset not only contained all kinds of relevant event related information like the name, description, cost, reservation, date info etc... It also included geographic information
+in including latitudes, longitudes, type of event (whether it was inside a building (indicated by a marker type) or over a large area (indicated by a polygon type)). This was really
+cool and I thought I could maybe display this information on a map. On the downside, the dataset had some problems like:
+- Lack of robust documentation.
+- Missing and incoherent/inconsistent data.
+
+Regardless, I learned to consider for false positives and missing information. 
+
+My initial idea was to make a simple frontend app and fetch the data, however, I wanted to refresh my memory SQL memory so I opted to
+build out an api server as backend. My choice of backend was pretty simple as I had some constraints which helped narrow down my choices. I wanted a **simple server**
+with minimal config, my choice of language was **Python** and I wanted **sql database** to store event information. Based on these constraints, **Flask** was an easy choice.
+
+With the choice made, I immediately began working on the project. I made a few blueprints that matches the feature set like:
+
+```sql
+DROP TABLE IF EXISTS event;
+DROP TABLE IF EXISTS date;
+DROP TABLE IF EXISTS weeklyDate;
+DROP TABLE IF EXISTS location;
+DROP TABLE IF EXISTS cost;
+DROP TABLE IF EXISTS image;
+DROP TABLE IF EXISTS reservation;
+```
+
+Based on these tables, I made a mapping of api endpoints that served each table of information. I also had a geojson endpoint one which incoded location based info based on the
+**[**GeoJSON standard**](https://geojson.org/ "GeoJSON standard link")**
+
+After setting up some basic stuff. I moved onto the frontend and I again opted for something simple and since I already knew react, I set up a simple react vite project with typescript.
+Now I mentioned geoJSON above. Geojson is the standard used to display map related information. So I extract the latitude longitude information along with the type
+(I only extracted the marker types as I dont intend to make the map too cluttered) and appended properties required by the frontend (like eventId, name etc...)
+
+Here is a pic of the geojson endpoint and the response as an example.
+![eventto api pic](../images/eventto/api.png "eventto api pic")
+
+Now i had to think of how to display the map information. To keep trend going, opting for the simple solution lead me to picking **[**Mapbox**](https://www.mapbox.com/ "Mapbox website link")**.
+Mapbox was pretty easy to work with and they had pretty good documentation for me to get started with. With the geojson data ready, all I had to do was fetch them and loop over the events and display them.
+
+Heres an image one all the events are fully loaded:
+![eventto website pic](../images/eventto/image.png "eventto website pic")
+
+I added popups which enabled users to view information by clicking on one of the event bubbles. A popup will appear displaying key information.
+![eventto website event popup](../images/eventto/popup.png "eventto website event popup")
+
+I also decided to make an event page (pretty rushed) to display any other information about the event although the event website usually fit the bill here.
+(Listed as part of the popup if available)
+![eventto website event page](../images/eventto/info.png "eventto website event page")
+
+To deploy, I had a couple of choices, I wanted to use aws services just so that I can learn about how aws works. I came across **[AWS lightsail](https://aws.amazon.com/lightsail/ "AWS lightsail website link")**
+which was a vps service. Since i was already familiar with configuring servers (my raspberry pi), I decided to opt for the lightsail option. They also provided free 90 days of use which helped. After loading an instance
+I went ahead and also bought eventto.ca domain. With cloudflare experience already under my belt, i decided to transfer the domain to cloudflare as well. After obtaining the static ip I registered it as a dns record for eventto.ca
+and boom I am ready to set everything up.
+
+I initially had plans to cet up CI/CD pipeline to build and move files to my vps and serve etc... But to keep up with the trend, I opted to host my frontend using Cloudflare workers. This makes it remarkably easy to manage
+frontend as I dont really have to do anything else, cloudflare carries, thank you cloudflare! As for my flask api server, I moved it to my vps which was built based on the Nginx image managed by bitnami.
+For moving my server files over, all I had to do was get the ssh credentials along with the private key which aws provided and I used FileZilla as per their recommendation (I didnt have any other SFTP application anyways).
+After moving my server files, the next step was to configure things like CORS and proxy pass so nginx knows when to proxy the requests. Heres the final nginx config i ended up with:
+
+```
+server {
+    listen 443 ssl;
+    server_name api.eventto.ca;
+
+    ssl_certificate /opt/bitnami/letsencrypt/certificates/eventto.ca.crt;
+    ssl_certificate_key /opt/bitnami/letsencrypt/certificates/eventto.ca.key;
+
+    # Security headers
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    # add_header 'Access-Control-Allow-Origin' '$http_origin' always;
+    add_header 'Access-Control-Allow-Methods' 'GET' always;
+    add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization' always;
+    add_header 'Access-Control-Expose-Headers' 'Content-Type' always;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Prefix /;
+
+        # Timeout configurations
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+        send_timeout 60s;
+    }
+
+    # Error pages
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /opt/bitnami/nginx/html;
+    }
+}
+```
+
+The api is accessible at **[https://api.eventto.ca](https://api.eventto.ca "api link")** **Note:** the root url doesnt display anything and you need to know the specific endpoints.
