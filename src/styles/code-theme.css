@@ -1,0 +1,11 @@
+/* Basic Shiki theme fallback */
+pre {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #1a1a1a !important;
+}
+
+.code-block {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+}
