@@ -2,11 +2,10 @@ export interface Frontmatter {
   id: string;
   title: string;
   date: string;
-  description?: string;
-  features: boolean;
-  repo: string;
+  description: string;
+  featured: boolean;
+  repository: string;
   url: string;
-  tags?: string[];
 }
 
 // id: "6ixplore"
