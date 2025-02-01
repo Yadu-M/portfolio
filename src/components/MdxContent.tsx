@@ -1,6 +1,10 @@
 // @ts-nocheck
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import fs from "node:fs/promises";
+import { Frontmatter } from "@/types";
+import { getProjects } from "@/api";
+import { BsGithub } from "react-icons/bs";
+import { Link, NavLink } from "react-router-dom";
 
 function clsx(...args: string[]) {
   return args.filter(Boolean).join(" ");
@@ -67,7 +71,7 @@ const components = {
       return (
         <a
           className={clsx(
-            "font-medium text-zinc-900 underline underline-offset-4",
+            "font-medium underline underline-offset-4",
             className,
           )}
           href={href}
@@ -80,10 +84,7 @@ const components = {
 
     return (
       <NavLink
-        className={clsx(
-          "font-medium text-zinc-900 underline underline-offset-4",
-          className,
-        )}
+        className={clsx("font-medium underline underline-offset-4", className)}
         to={href}
         {...props}
       >
@@ -185,13 +186,53 @@ const components = {
 const mdxModules = import.meta.glob("../content/projects/*.mdx");
 
 export const MdxLoader = ({ content }: { content: string }) => {
+  // const [projects, setProjects] = useState<
+  //   { slug: string; frontMatter: Frontmatter }[]
+  // >([]);
+  // const [loading, setLoading] = useState<boolean>(true);
+
+  // useEffect(() => {
+  //   getProjects().then((data) => {
+  //     setProjects(data);
+  //     setLoading(false);
+  //   });
+  // }, []);
+
   const importCurrMdx = mdxModules[`../content/${content}.mdx`];
+  const [frontMatter, setFrontMatter] = useState<Frontmatter | null>(null);
   if (!importCurrMdx) return <>Content Not Found</>;
 
-  const Content = lazy(() => importCurrMdx());
+  const Content = lazy(async () => {
+    const mdx = importCurrMdx();
+    setFrontMatter(await mdx.then((data) => data.frontmatter));
+    return mdx;
+  });
 
   return (
     <Suspense fallback={<div>Loading content...</div>}>
+      <div className="mb-10 font-mono flex flex-col">
+        {frontMatter?.repository && (
+          <Link
+            to={`https://github.com/Yadu-M/${frontMatter?.repository}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-auto self-start"
+          >
+            Repo Link: {`https://github.com/Yadu-M/${frontMatter?.repository}`}
+          </Link>
+        )}
+        {frontMatter?.url && (
+          <Link
+            to={`${frontMatter?.url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-auto self-start"
+          >
+            Website Link: {`${frontMatter?.url}`}
+          </Link>
+        )}
+
+      </div>
       <Content components={components} />
     </Suspense>
   );
