@@ -174,7 +174,7 @@ const components = {
   pre: ({ className, ...props }) => (
     <pre
       className={clsx(
-        "mb-4 mt-6 overflow-x-auto rounded-lg bg-zinc-900 p-5",
+        "mb-4 mt-6 overflow-x-auto rounded-lg",
         className,
       )}
       {...props}
@@ -186,18 +186,6 @@ const components = {
 const mdxModules = import.meta.glob("../content/projects/*.mdx");
 
 export const MdxLoader = ({ content }: { content: string }) => {
-  // const [projects, setProjects] = useState<
-  //   { slug: string; frontMatter: Frontmatter }[]
-  // >([]);
-  // const [loading, setLoading] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   getProjects().then((data) => {
-  //     setProjects(data);
-  //     setLoading(false);
-  //   });
-  // }, []);
-
   const importCurrMdx = mdxModules[`../content/${content}.mdx`];
   const [frontMatter, setFrontMatter] = useState<Frontmatter | null>(null);
   if (!importCurrMdx) return <>Content Not Found</>;
