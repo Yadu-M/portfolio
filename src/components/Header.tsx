@@ -1,21 +1,45 @@
 import { Button } from "@/components/ui/button";
 import { BsGithub } from "react-icons/bs";
 import { BsLinkedin } from "react-icons/bs";
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ModeToggle } from "./mode-toggle";
 import { NavLink } from "react-router-dom";
+import { IconType } from "react-icons/lib";
+
+const NormalBtn = ({
+  link,
+  text,
+  Icon,
+}: {
+  link: string;
+  text: string;
+  Icon: IconType;
+}) => {
+  return (
+    <Button variant={"outline"} size={"sm"} asChild>
+      <a href={`${link}`} referrerPolicy="no-referrer" target="_blank">
+        <Icon />
+        <div className="font-mono">{text}</div>
+      </a>
+    </Button>
+  );
+};
+
+const SmallBtn = ({ link, Icon }: { link: string; Icon: IconType }) => {
+  return (
+    <Button variant={"outline"} size={"icon"} asChild>
+      <a href={`${link}`} referrerPolicy="no-referrer" target="_blank">
+        <Icon />
+      </a>
+    </Button>
+  );
+};
 
 export const Header = () => {
   const gitHubLink: URL = new URL("https://github.com/Yadu-M");
   const linkedInLink: URL = new URL("https://www.linkedin.com/in/yaduyem/");
 
   const [isSmallScreen, setSmallScreen] = useState<boolean>(false);
-
-  type mouseEvent = MouseEvent<HTMLButtonElement, globalThis.MouseEvent>;
-  const redirect = (e: mouseEvent, url: URL) => {
-    e.preventDefault();
-    window.open(url);
-  };
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 640px)");
@@ -44,37 +68,19 @@ export const Header = () => {
 
       <nav className="flex gap-5">
         {isSmallScreen ? (
-          <Button variant={"outline"} size={"icon"}>
-            <BsGithub />
-          </Button>
+          <SmallBtn Icon={BsGithub} link={`${gitHubLink}`} />
         ) : (
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            onClick={(e) => {
-              redirect(e, gitHubLink);
-            }}
-          >
-            <BsGithub />
-            <div className="font-mono">GitHub</div>
-          </Button>
+          <NormalBtn Icon={BsGithub} link={`${gitHubLink}`} text="GitHub" />
         )}
 
         {isSmallScreen ? (
-          <Button variant={"outline"} size={"icon"}>
-            <BsLinkedin />
-          </Button>
+          <SmallBtn Icon={BsLinkedin} link={`${linkedInLink}`} />
         ) : (
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            onClick={(e) => {
-              redirect(e, linkedInLink);
-            }}
-          >
-            <BsLinkedin />
-            <div className="font-mono">LinkedIn</div>
-          </Button>
+          <NormalBtn
+            Icon={BsLinkedin}
+            link={`${linkedInLink}`}
+            text="LinkedIn"
+          />
         )}
         <ModeToggle />
       </nav>
